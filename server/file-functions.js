@@ -11,7 +11,7 @@ const checkPath = (filePath) => {
     }
     let isDirectory = lstatSync(filePath).isDirectory();
     if (isDirectory) {
-        if (filePath.charAt(filePath.length - 1) !== "/") {
+        if (filePath.charAt(filePath.length - 1) !== '/') {
             filePath = `${filePath}/`;
         }
         filePath = `${filePath}index.html`;
@@ -21,21 +21,16 @@ const checkPath = (filePath) => {
     } else {
         return "error404";
     }
-    // return filePath;
-};
-
-const readFilePromise = async (filePath) => {
-    return await fs.readFile(filePath, 'utf-8');
 };
 
 module.exports = {
     updatePath: filePath => checkPath(filePath),
-    readFile: (filePath) => {
+    readFile: async (filePath) => {
         filePath = checkPath(filePath);
         if (filePath === "error404") {
             return Promise.resolve("error404");
         }
-        const fileContents = readFilePromise(filePath);
+        const fileContents = await fs.readFile(filePath, "utf-8");
         return fileContents;
     },
     fileContentType: (filePath) => {
